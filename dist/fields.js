@@ -1,9 +1,9 @@
 // 学習の入口としての分類。研究分野の排他的な分類ではありません。
 const NLP_FIELDS = [
   {
-    "name": "ルールベース・言語解析",
-    "idea": "ことばの形と構造を捉える",
-    "description": "明示的な規則・辞書から入り、単語・品詞・文の構造を知ります。言語解析のタスク自体は統計モデルや深層学習でも解けます。",
+    "name": "ルールと言語解析",
+    "idea": "辞書・規則で文字列と文法構造を扱う",
+    "description": "古くから使われる方法の入口です。品詞付けや構文解析といった解析タスク自体は、後の統計モデルやニューラルモデルでも解けます。",
     "items": [
       [
         "正規表現",
@@ -12,6 +12,14 @@ const NLP_FIELDS = [
         "例：2026/10/11を「数字4桁 / 2桁 / 2桁」で抽出します。パターン一致だけでは日付の妥当性は保証されません。",
         3,
         "前処理の入口"
+      ],
+      [
+        "トークン化・正規化",
+        "前処理",
+        "文章を語や文字などの単位（トークン）に分け、表記の揺れをそろえます。以降のすべての手法の入力を決める工程です。",
+        "例：「Cats」→「cats」のように小文字化し、スペースや記号で区切ります。日本語は空白で区切れないため、形態素解析などを使います。",
+        3,
+        "前処理"
       ],
       [
         "形態素解析",
@@ -48,9 +56,9 @@ const NLP_FIELDS = [
     ]
   },
   {
-    "name": "統計的自然言語処理",
-    "idea": "頻度と確率から規則性をつかむ",
-    "description": "コーパス内の出現頻度や共起、確率を利用します。BoWとTF-IDFは文章の表現方法、Naive BayesとHMMは予測に使うモデルです。N-gramは特徴量にも言語モデルにも利用できます。",
+    "name": "統計的NLPと機械学習",
+    "idea": "頻度・確率と特徴量から学習する",
+    "description": "コーパスの頻度や確率を使う方法と、特徴量から分類器を学習する方法をまとめています。両者は実際には重なっており、ここでは使い方の近さで緩く分けています。BoWとTF-IDFは文章の表現、Naive BayesやHMMなどは予測のモデルです。",
     "items": [
       [
         "Bag of Words（BoW）",
@@ -69,10 +77,26 @@ const NLP_FIELDS = [
         "BoWとTF-IDF"
       ],
       [
+        "テキストの特徴量化",
+        "表現・前処理",
+        "文章を学習器が使える数値に変換します。語頻度、文字n-gram、長さ、埋め込みなどを利用できます。",
+        "例：TF-IDFベクトルを線形分類器の入力にします。表現と予測器を分けて考えます。",
+        4,
+        "数値表現"
+      ],
+      [
         "N-gram",
         "特徴量・モデル",
         "連続するn個のトークンを扱います。特徴量にも使え、言語モデルでは直前のn−1個を条件に次を予測します。",
         "例：bigramなら「猫」の後に「が」が来る確率を、出現回数から推定します。",
+        7,
+        "系列と言語モデル"
+      ],
+      [
+        "言語モデル",
+        "基礎概念",
+        "語の列の出現しやすさを確率で表し、次の語を予測します。N-gramからRNN、Transformerまで、「次を予測する」という考え方でつながっています。",
+        "例：「今日は天気が」の次に「良い」が来る確率を求めます。",
         7,
         "系列と言語モデル"
       ],
@@ -83,29 +107,6 @@ const NLP_FIELDS = [
         "例：「無料」「当選」の出現傾向から迷惑メールのクラスを予測します。語が現実に独立だと主張する方法ではありません。",
         null,
         "発展：確率的な文書分類"
-      ],
-      [
-        "隠れマルコフモデル（HMM）",
-        "系列モデル",
-        "観測できる語の列の背後に、隠れた状態の列を仮定します。状態遷移と観測の確率を利用します。",
-        "例：語を観測し、名詞→助詞→動詞といった品詞の状態列を推定します。",
-        null,
-        "発展：確率的な系列モデル"
-      ]
-    ]
-  },
-  {
-    "name": "機械学習による自然言語処理",
-    "idea": "特徴から予測の境界を学ぶ",
-    "description": "ここでは主に従来の教師あり学習をまとめています。統計的NLPとの区分は明確ではなく、深層学習も機械学習の一部です。",
-    "items": [
-      [
-        "テキストの特徴量化",
-        "表現・前処理",
-        "文章を学習器が使える数値に変換します。語頻度、文字n-gram、長さ、埋め込みなどを利用できます。",
-        "例：TF-IDFベクトルを線形分類器の入力にします。表現と予測器を分けて考えます。",
-        4,
-        "数値表現"
       ],
       [
         "ロジスティック回帰",
@@ -124,19 +125,35 @@ const NLP_FIELDS = [
         "発展：線形分類器"
       ],
       [
+        "隠れマルコフモデル（HMM）",
+        "系列モデル",
+        "観測できる語の列の背後に、隠れた状態の列を仮定します。状態遷移と観測の確率を利用します。",
+        "例：語を観測し、名詞→助詞→動詞といった品詞の状態列を推定します。",
+        null,
+        "発展：確率的な系列モデル"
+      ],
+      [
         "文書分類・感情分析",
         "応用タスク",
         "文書にカテゴリや感情のラベルを付けます。ルール・統計モデル・ニューラルモデルのどれでも取り組めます。",
         "例：ニュース→スポーツ / 経済、レビュー→肯定 / 否定。手法とは別の「何を解くか」の分類です。",
         5,
         "分類と評価"
+      ],
+      [
+        "評価指標（分類）",
+        "評価",
+        "Accuracy、Precision、Recall、F1などで分類の結果を測ります。クラスに偏りがあるデータでは、Accuracyだけでは不十分です。",
+        "例：肯定80件・否定20件で「いつも肯定」と返すと、Accuracyは80%ですが、否定のRecallは0%です。",
+        5,
+        "分類と評価"
       ]
     ]
   },
   {
-    "name": "深層学習による自然言語処理",
-    "idea": "表現と文脈をデータから学ぶ",
-    "description": "ニューラルネットワークによる表現学習から、系列の処理へ進みます。Word2VecやGloVeはよくこの入口で学びますが、どちらも深いネットワークそのものではありません。",
+    "name": "ニューラルネットワークによるNLP",
+    "idea": "ベクトル表現と系列をデータから学習する",
+    "description": "ニューラルネットワークで、単語の表現や系列の処理を学習します。Word2VecやGloVeはこの入口で学びますが、どちらも深いネットワークではありません。",
     "items": [
       [
         "Word2Vec",
@@ -181,9 +198,9 @@ const NLP_FIELDS = [
     ]
   },
   {
-    "name": "Transformer・LLM",
-    "idea": "大きな文脈を使い、応用へつなぐ",
-    "description": "Transformerは深層学習の一種です。この枝には、計算機構・モデル系列・学習方法・応用システムが含まれるので、種類も合わせて見てください。",
+    "name": "Transformerと事前学習モデル",
+    "idea": "文脈を並列に処理し、事前学習で汎用の表現を得る",
+    "description": "Attentionを中心にした構造と、それを大規模データで事前学習したモデル系列です。BERTやGPTは、Transformerを使うモデルの系列名です。",
     "items": [
       [
         "Attention",
@@ -200,6 +217,14 @@ const NLP_FIELDS = [
         "例：位置ごとの表現をSelf-Attentionで更新し、それを複数層で繰り返します。",
         9,
         "Transformer"
+      ],
+      [
+        "サブワード・トークナイザ",
+        "前処理",
+        "単語より細かい単位に分けて、未知語を減らします。BPEは、頻出する隣接ペアを順にまとめる手順を使います。",
+        "例：unhappiness → un / happi / ness のように分かれることがあります。分割は学習したコーパスで変わります。",
+        3,
+        "前処理"
       ],
       [
         "BERT",
@@ -226,13 +251,28 @@ const NLP_FIELDS = [
         "事前学習とLLM"
       ],
       [
+        "指示チューニング・選好調整",
+        "学習方法",
+        "指示と応答の例でSFTを行い、人や別モデルによる選好のデータでさらに調整します。事前学習だけでは、指示に従う振る舞いにはなりません。",
+        "例：「3行で要約して」という指示に対する良い応答例で追加学習します。",
+        10,
+        "事前学習とLLM"
+      ],
+      [
         "埋め込みモデル",
         "表現モデル",
         "単語・文・文書をベクトルに写します。文埋め込みモデルは意味検索やクラスタリングに使えます。",
         "例：「参加費はいくら？」と、料金の説明文との類似度を測ります。Transformer以外の方法でも表現は作れます。",
         6,
         "埋め込みの基礎"
-      ],
+      ]
+    ]
+  },
+  {
+    "name": "応用システムと評価・運用",
+    "idea": "モデルを組み合わせて使い、結果を測る",
+    "description": "この枝は手法の種類ではなく、上の手法を組み合わせた応用と、その評価・運用です。",
+    "items": [
       [
         "RAG",
         "応用システム",
@@ -240,6 +280,14 @@ const NLP_FIELDS = [
         "例：社内規程を検索し、その根拠に基づいた回答を作ります。モデル構造そのものの名前ではありません。",
         11,
         "検索とRAG"
+      ],
+      [
+        "生成の自動評価（BLEU・ROUGE）",
+        "評価",
+        "BLEUは翻訳、ROUGEは要約でよく使われる、参照文との語の重なりに基づく指標です。意味が同じでも表現が違うと低くなるため、人による評価と併用します。",
+        "例：参照訳と語の並びがよく重なる翻訳ほど、BLEUが高くなります。",
+        null,
+        "発展：生成の評価"
       ],
       [
         "LLMの評価・運用",
@@ -265,7 +313,7 @@ const NLP_TASKS = [
     "文章 → 対象の範囲・ラベル",
     "人名・組織名、関係・出来事を取り出す",
     "辞書、HMM、ニューラル系列モデルなど",
-    1
+    null
   ],
   [
     "構文・意味・談話の解析",
@@ -311,5 +359,5 @@ const NLP_TASKS = [
   ]
 ];
 function fieldItem(item){const [name,type,desc,example,chapter,label]=item;return `<details class="topic" data-search="${esc(item.join(' ').toLowerCase())}"><summary><span class="topic-name">${name}</span><span class="type-tag">${type}</span><span class="topic-plus" aria-hidden="true">＋</span></summary><div class="topic-body"><p>${desc}</p><p class="topic-example">${example}</p>${chapter?`<a href="#chapter-${chapter}">第${chapter}章 · ${label} →</a>`:`<span class="topic-future">${label} · 現在の12章では詳説していません</span>`}</div></details>`;}
-function fieldsPage(){return `<article class="field-page"><p class="eyebrow">EXPLORE THE FIELD / NLP AT A GLANCE</p><h1>NLPの<em>全体像</em></h1><p class="summary">手法の違いと、解く問題の違い。<br>2つの軸で見ると、今どこを学んでいるかがわかります。</p><div class="axis-intro"><div><span>AXIS 01</span><b>どう解くか</b><p>ルール、確率、学習、ニューラルネットワーク。以下の5つの枝で手法を見渡します。</p></div><div><span>AXIS 02</span><b>何を解くか</b><p>分類、抽出、翻訳、検索、対話。1つのタスクを複数の手法で解けます。</p></div></div><div class="note">この5分類は学習の入口としての整理です。統計的NLPと機械学習は重なり、深層学習は機械学習の一部、Transformerは深層学習の一種です。形態素解析や構文解析も、ルールだけで解くとは限りません。</div><div class="map-tools"><label for="field-search">分野・用語を探す<input type="search" id="field-search" placeholder="例：HMM、構文、翻訳"></label><button id="expand-fields">説明をすべて開く</button><button id="collapse-fields">説明をすべて閉じる</button></div><p id="field-status" role="status" aria-live="polite">27項目 · 項目を開くと説明・例・関連章を表示</p><div class="tree-root"><span class="logo">n.</span><div><b>自然言語処理（NLP）</b><small>ことばを処理するための手法と応用</small></div></div><div class="field-tree">${NLP_FIELDS.map((g,i)=>`<section class="field-branch"><div class="branch-header"><span class="branch-number">0${i+1}</span><div><h2>${g.name}</h2><p>${g.idea}</p></div></div><p class="branch-description">${g.description}</p><div class="branch-items">${g.items.map(fieldItem).join('')}</div></section>`).join('')}</div><p class="field-empty" hidden>該当する項目がありません。検索語を変えてください。</p><section class="task-section"><p class="eyebrow">AXIS 02 / WHAT PROBLEM DO WE SOLVE?</p><h2>「何を解くか」で見る分野</h2><p>上の枝が方法の地図なら、こちらは問題の地図です。タスクと手法を1対1に固定しないことがポイントです。</p><div class="task-grid">${NLP_TASKS.map(([name,io,example,methods,chapter])=>`<div class="task-card"><h3>${name}</h3><div class="task-io">${io}</div><p>${example}。</p><small>手法の例：${methods}</small>${chapter?`<a href="#chapter-${chapter}">関連する第${chapter}章 →</a>`:'<span class="topic-future">発展分野 · 現在の12章では詳説していません</span>'}</div>`).join('')}</div></section><section class="guide"><h3>2つの軸をつなぐ例：感情分析</h3><div class="approaches"><div><b>ルール</b>肯定語・否定語の辞書</div><div><b>統計・線形モデル</b>TF-IDF＋分類器</div><div><b>ニューラルモデル</b>文脈表現＋分類器</div></div><p>解く問題は同じです。必要なデータ、表現、計算量、誤りの傾向が変わります。新しい手法が、すべての用途で古い手法を置き換えるわけではありません。</p></section><section class="guide"><h3>この地図から、どう学ぶ？</h3><p><b>最初の一周：</b> 第1〜5章で、前処理・表現・分類・評価をつなげます。</p><p><b>文脈を理解する：</b> 第6〜9章で、埋め込み・系列・Attention・Transformerを学びます。</p><p><b>応用を作る：</b> 第10〜12章で、LLM・RAG・実験をつなげます。</p><p><b>二周目：</b> 地図で気になった品詞タグ付け、構文解析、Naive Bayes、HMMなどを掘り下げます。</p><a class="primary" href="#home">12章の学習マップへ →</a></section><div class="sources"><b>参考：分野ごとの詳細を調べる</b><a href="https://web.stanford.edu/~jurafsky/slp3/" target="_blank" rel="noopener">Speech and Language Processing · 系列ラベリング・構文解析・検索・音声など ↗</a><p>分類と短い説明は、この教材の学習用に独自に整理しています。</p></div></article>`;}
-function initFields(){const topics=[...document.querySelectorAll('.topic')];$('#field-search').oninput=()=>{const q=$('#field-search').value.trim().toLowerCase();let count=0;document.querySelectorAll('.field-branch').forEach(branch=>{let visible=0;branch.querySelectorAll('.topic').forEach(t=>{const matches=t.dataset.search.includes(q)||branch.querySelector('h2').textContent.toLowerCase().includes(q);t.hidden=!matches;if(matches){visible++;count++;}});branch.hidden=visible===0;});$('#field-status').textContent=`${count} / 27項目${q?' · 検索結果':' · 項目を開くと説明・例・関連章を表示'}`;$('.field-empty').hidden=count>0;};$('#expand-fields').onclick=()=>topics.filter(t=>!t.hidden).forEach(t=>t.open=true);$('#collapse-fields').onclick=()=>topics.forEach(t=>t.open=false);}
+function fieldsPage(){return `<article class="field-page"><p class="eyebrow">EXPLORE THE FIELD / NLP AT A GLANCE</p><h1>NLPの<em>全体像</em></h1><p class="summary">手法の違いと、解く問題の違い。<br>2つの軸で見ると、今どこを学んでいるかがわかります。</p><div class="axis-intro"><div><span>AXIS 01</span><b>どう解くか</b><p>ルール、統計・機械学習、ニューラルネットワーク、Transformer系モデルの4段階と、応用・評価の枝で見渡します。</p></div><div><span>AXIS 02</span><b>何を解くか</b><p>分類、抽出、翻訳、検索、対話。1つのタスクを複数の手法で解けます。</p></div></div><div class="note">この分類は、おおよその発展順に並べた学習用の整理で、研究分野の厳密な区分ではありません。統計的NLPと機械学習は重なり、ニューラルネットワークは機械学習の一部、Transformerはその一種です。新しい手法が古い手法を完全に置き換えるわけではなく、形態素解析や構文解析などの解析タスクも、どの段階の手法でも解けます。最後の枝は手法ではなく、応用と評価・運用です。</div><div class="map-tools"><label for="field-search">分野・用語を探す<input type="search" id="field-search" placeholder="例：HMM、構文、翻訳"></label><button id="expand-fields">説明をすべて開く</button><button id="collapse-fields">説明をすべて閉じる</button></div><p id="field-status" role="status" aria-live="polite">${NLP_FIELDS.reduce((a,g)=>a+g.items.length,0)}項目 · 項目を開くと説明・例・関連章を表示</p><div class="tree-root"><span class="logo">n.</span><div><b>自然言語処理（NLP）</b><small>ことばを処理するための手法と応用</small></div></div><div class="field-tree">${NLP_FIELDS.map((g,i)=>`<section class="field-branch"><div class="branch-header"><span class="branch-number">0${i+1}</span><div><h2>${g.name}</h2><p>${g.idea}</p></div></div><p class="branch-description">${g.description}</p><div class="branch-items">${g.items.map(fieldItem).join('')}</div></section>`).join('')}</div><p class="field-empty" hidden>該当する項目がありません。検索語を変えてください。</p><section class="task-section"><p class="eyebrow">AXIS 02 / WHAT PROBLEM DO WE SOLVE?</p><h2>「何を解くか」で見る分野</h2><p>上の枝が方法の地図なら、こちらは問題の地図です。タスクと手法を1対1に固定しないことがポイントです。</p><div class="task-grid">${NLP_TASKS.map(([name,io,example,methods,chapter])=>`<div class="task-card"><h3>${name}</h3><div class="task-io">${io}</div><p>${example}。</p><small>手法の例：${methods}</small>${chapter?`<a href="#chapter-${chapter}">関連する第${chapter}章 →</a>`:'<span class="topic-future">発展分野 · 現在の12章では詳説していません</span>'}</div>`).join('')}</div></section><section class="guide"><h3>2つの軸をつなぐ例：感情分析</h3><div class="approaches"><div><b>ルール</b>肯定語・否定語の辞書</div><div><b>統計・線形モデル</b>TF-IDF＋分類器</div><div><b>ニューラルモデル</b>文脈表現＋分類器</div></div><p>解く問題は同じです。必要なデータ、表現、計算量、誤りの傾向が変わります。新しい手法が、すべての用途で古い手法を置き換えるわけではありません。</p></section><section class="guide"><h3>この地図から、どう学ぶ？</h3><p><b>最初の一周：</b> 第1〜5章で、前処理・表現・分類・評価をつなげます。</p><p><b>文脈を理解する：</b> 第6〜9章で、埋め込み・系列・Attention・Transformerを学びます。</p><p><b>応用を作る：</b> 第10〜12章で、LLM・RAG・実験をつなげます。</p><p><b>二周目：</b> 地図で気になった品詞タグ付け、構文解析、Naive Bayes、HMMなどを掘り下げます。</p><a class="primary" href="#home">12章の学習マップへ →</a></section><div class="sources"><b>参考：分野ごとの詳細を調べる</b><a href="https://web.stanford.edu/~jurafsky/slp3/" target="_blank" rel="noopener">Speech and Language Processing · 系列ラベリング・構文解析・検索・音声など ↗</a><p>分類と短い説明は、この教材の学習用に独自に整理しています。</p></div></article>`;}
+function initFields(){const topics=[...document.querySelectorAll('.topic')];$('#field-search').oninput=()=>{const q=$('#field-search').value.trim().toLowerCase();let count=0;document.querySelectorAll('.field-branch').forEach(branch=>{let visible=0;branch.querySelectorAll('.topic').forEach(t=>{const matches=t.dataset.search.includes(q)||branch.querySelector('h2').textContent.toLowerCase().includes(q);t.hidden=!matches;if(matches){visible++;count++;}});branch.hidden=visible===0;});$('#field-status').textContent=`${count} / ${topics.length}項目${q?' · 検索結果':' · 項目を開くと説明・例・関連章を表示'}`;$('.field-empty').hidden=count>0;};$('#expand-fields').onclick=()=>topics.filter(t=>!t.hidden).forEach(t=>t.open=true);$('#collapse-fields').onclick=()=>topics.forEach(t=>t.open=false);}
