@@ -36,3 +36,12 @@
 @media print{.bert-options button,.bert-feedback{display:none}.bert-check{break-inside:avoid}.bert-demo{break-inside:auto}}
 .rnn-actions{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
 @media print{.rnn-demo{break-inside:auto}}
+
+/* Beginner route: optional implementation and separate feedback for each question. */
+.code-supplement{margin:24px 0;border:1px solid var(--line);border-radius:8px;padding:18px}
+.code-supplement>summary{cursor:pointer;font-weight:600;color:var(--green)}
+.qitem+.qitem{margin-top:26px;padding-top:20px;border-top:1px solid var(--line)}
+.takeaways{margin:26px 0;padding:20px 24px;border-left:4px solid var(--green);background:#e9eedf}
+.takeaways h3{margin-top:0}.takeaways ul{margin-bottom:0}
+@media print{.code-supplement{border:0;padding:0}.qitem{break-inside:avoid}.takeaways{background:#fff}}
+#lab-4 th:nth-child(2){white-space:nowrap}
