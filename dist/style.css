@@ -8,3 +8,15 @@
 #print-document{display:none}.download-actions{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}.lesson section>details{border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin:14px 0}.lesson section>details summary{cursor:pointer;color:var(--green);font-size:13px}.print-value{white-space:pre-wrap;border:1px solid #bbb;padding:6px 10px;font-size:11px;margin:4px 0 12px}.print-choice{font-size:12px;margin:5px 0}.print-intro{font-size:12px}
 @media print{body.print-all>header,body.print-all>.layout,body.print-all>footer{display:none!important}body.print-all>#print-document{display:block}#print-document{color:#111}#print-document .lab,#print-document .field-branch,#print-document pre{break-inside:auto}#print-document h2,#print-document h3{break-after:avoid}#print-document .bartrack{border:1px solid #999}#print-document .barfill{background:#196b54!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}#print-document .sources a{overflow-wrap:anywhere}#print-document .download-actions{display:none}#print-document pre{font-size:9pt}#print-document .field-page .topic{break-inside:avoid}}
 .home-link{font-size:12px;text-decoration:none;border:1px solid var(--line);border-radius:7px;padding:6px 12px;white-space:nowrap;color:var(--ink)}.home-link:hover{border-color:var(--green);color:var(--green)}@media(max-width:720px){.header-right .quiet{display:none}.home-link{font-size:11px;padding:5px 9px}}
+
+/* Keep the site controls visible while reading. */
+@media screen {
+  :root{--header-height:83px}
+  html{scroll-padding-top:calc(var(--header-height) + 16px)}
+  body>header{position:sticky;top:0;z-index:50}
+  aside{top:var(--header-height);max-height:calc(100vh - var(--header-height))}
+  @media(max-width:720px){
+    :root{--header-height:70px}
+    aside{top:auto;max-height:none}
+  }
+}
